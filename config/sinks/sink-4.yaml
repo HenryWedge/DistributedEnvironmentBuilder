@@ -1,0 +1,8 @@
+kind: sink
+name: dfg-sink-4
+spec:
+  type: dfgMiner
+  senderId: "node5"
+  network: "net1"
+  dataSourceRefs:
+    - "QualityControl"
