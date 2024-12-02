@@ -3,6 +3,6 @@ name: dfg-sink-6
 spec:
   type: dfgMiner
   senderId: "node7"
-  network: "net1"
+  network: "net2"
   dataSourceRefs:
     - "Shipping"
