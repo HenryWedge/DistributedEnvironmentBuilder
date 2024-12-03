@@ -1,6 +1,6 @@
 from typing import List
 
-from distributed_environment_builder.platform.abstract_algorithm import AbstractAlgorithm
+from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner import NetworkAccessDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner_intermediary import NetworkAccessDfgMinerIntermediary
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology

@@ -1,6 +1,6 @@
 from typing import Dict, Any, List
 
-from distributed_environment_builder.platform.abstract_algorithm import AbstractAlgorithm
+from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
 from distributed_environment_builder.algo.dfgminer.hardware.cpu_dfg_miner import CpuDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner import NetworkAccessDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.storage import StorageDfgMiner
@@ -47,9 +47,7 @@ class DfgMiner(AbstractDfgMiner, AbstractAlgorithm):
         else:
             predecessor = "<start>"
 
-        self.storage.store_directly_follows_relation(
-            DirectlyFollowsRelation(predecessor, incoming_event.activity)
-        )
+        self.storage.store_directly_follows_relation(DirectlyFollowsRelation(predecessor, incoming_event.activity))
 
     def get_directly_follows_graph(self) -> DirectlyFollowsGraph:
         directly_follows_relations: Dict[

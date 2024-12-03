@@ -68,3 +68,12 @@ class ComputingTopology:
         for computing_node in self.computing_nodes:
             result[f"net-{computing_node}"] = self.computing_nodes[computing_node].network
         return result
+
+    def increase_network_capacities(self, new_capacity):
+        networks = self.get_networks()
+        for network in self.get_networks():
+            networks[network].adjust_capacity(new_capacity)
+
+    def reset(self):
+        for node in self.computing_nodes:
+            self.computing_nodes[node].reset()

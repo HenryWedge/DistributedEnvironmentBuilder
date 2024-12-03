@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from distributed_environment_builder.platform.abstract_algorithm import AbstractAlgorithm
+from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 
 class DistributedAlgorithm:
@@ -19,6 +19,9 @@ class DistributedAlgorithm:
             computing_topology=self._computing_topology
         )
         self._algorithm_nodes[algorithm_node_id] = algorithm
+
+    def get_computing_topology(self):
+        return self._computing_topology
 
     def get_algorithm(self, algorithm_node_id):
         return self._algorithm_nodes[algorithm_node_id]

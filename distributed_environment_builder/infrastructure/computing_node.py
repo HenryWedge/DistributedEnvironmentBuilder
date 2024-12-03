@@ -23,3 +23,8 @@ class ComputingNode:
 
     def get_label(self):
         return self._label
+
+    def reset(self):
+        self.cpu.reset()
+        self.memory.reset()
+        self.network.reset()

@@ -1,9 +1,9 @@
 from typing import List
 
 from distributed_environment_builder.algo.edgemine.edge_miner_abstract import AbstractEdgeMiner
-from distributed_environment_builder.algo.edgemine.hardware.edge_mine_cpu import EdgeMineCpu
-from distributed_environment_builder.algo.edgemine.hardware.network import EdgeMineNetwork
-from distributed_environment_builder.algo.edgemine.hardware.edge_mine_storage import EdgeMineStorage
+from distributed_environment_builder.algo.edgemine.hardware.cpu_edge_mine import EdgeMineCpu
+from distributed_environment_builder.algo.edgemine.hardware.network_access_edge_mine import EdgeMineNetwork
+from distributed_environment_builder.algo.edgemine.hardware.storage_edge_mine import EdgeMineStorage
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 from process_mining_core.datastructure.converter.directly_follows_graph_merger import DirectlyFollowsGraphMerger
 from process_mining_core.datastructure.core.directly_follows_relation import DirectlyFollowsRelation
@@ -19,22 +19,25 @@ class EdgeDfgMiner(AbstractEdgeMiner):
         self.storage = None
         self.network = None
         self.cpu = None
+        self.node_id = None
 
     def assign_to_node(
             self,
             node_id,
             computing_topology: ComputingTopology,
         ):
-        self.cpu: EdgeMineCpu = EdgeMineCpu()
+        self.node_id = node_id
         computing_node= computing_topology.get_computing_node(node_id)
         topology = computing_topology.get_network_for_computing_node(node_id)[0]
+        self.cpu: EdgeMineCpu = EdgeMineCpu(computing_node.cpu)
         self.network: EdgeMineNetwork = EdgeMineNetwork(node_id, topology, computing_node.network)
         self.storage: EdgeMineStorage = EdgeMineStorage(computing_node.memory)
         self.setup_most_frequent_predecessors()
 
     def setup_most_frequent_predecessors(self):
         for node_id in self.network.get_all_node_ids():
-            self.storage.store_predecessor(node_id)
+            if node_id != self.node_id:
+                self.storage.store_predecessor(node_id)
 
     def receive_event(self, event: Event):
         self.setup_most_frequent_predecessors()

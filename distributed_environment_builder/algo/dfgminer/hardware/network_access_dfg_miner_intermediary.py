@@ -14,8 +14,9 @@ class NetworkAccessDfgMinerIntermediary:
     def get_directly_follows_graph(self) -> List[DirectlyFollowsGraph]:
         result = []
         for node in self.topology.get_all_nodes_intermediary(self.node_id):
+            directly_follows_graph = node.get_directly_follows_graph()
             self.network.send(payload=1)
-            latest_event = node.get_directly_follows_graph()
-            if latest_event:
-                result.append(latest_event)
+            if directly_follows_graph:
+                result.append(directly_follows_graph)
+        self.network.send(payload=len(result))
         return result

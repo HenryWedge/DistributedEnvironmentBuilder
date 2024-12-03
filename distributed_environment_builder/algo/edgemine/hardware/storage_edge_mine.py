@@ -38,7 +38,8 @@ class EdgeMineStorage:
         self._case_successor[case_id] = node_id
 
     def get_latest_event_for_case(self, case_id):
-        return self._latest_event_per_case_id[case_id]
+        if case_id in self._latest_event_per_case_id:
+            return self._latest_event_per_case_id[case_id]
 
     def get_most_frequent_predecessors(self):
         result = []

@@ -18,9 +18,9 @@ class FogTopology:
         computing_topology.add_network(f"net-{self.intermediary_node_count}", Network(label="intermediary"))
 
         for i in range(self.source_node_count):
-            cpu = CpuInstruction(lambda p: p, lambda p: p)
-            storage_write = StorageInstruction(lambda p: p, lambda p: p)
-            network_send = NetworkInstruction(lambda p: p, lambda p: p)
+            cpu = CpuInstruction(lambda p: p, lambda p: p, 10)
+            storage_write = StorageInstruction(lambda p: p, lambda p: p, 1000)
+            network_send = NetworkInstruction(lambda p: p, lambda p: p, 10)
 
             computing_topology.add_computing_node(
                 name=f"sensor-{i}",
@@ -35,9 +35,9 @@ class FogTopology:
             )
 
         for i in range(self.intermediary_node_count):
-            cpu = CpuInstruction(lambda p: p, lambda p: p)
-            storage_write = StorageInstruction(lambda p: p, lambda p: p)
-            network_send = NetworkInstruction(lambda p: p, lambda p: p)
+            cpu = CpuInstruction(lambda p: p, lambda p: p, 10)
+            storage_write = StorageInstruction(lambda p: p, lambda p: p, 1000)
+            network_send = NetworkInstruction(lambda p: p, lambda p: p, 10)
 
             computing_topology.add_computing_node(
                 name=f"intermediary-{i}",

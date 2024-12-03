@@ -1,5 +1,5 @@
 from distributed_environment_builder.infrastructure.hii.network_hii import NetworkInstruction
-from distributed_environment_builder.algo.edgemine.hardware.edge_mine_topology import EdgeMineTopology
+from distributed_environment_builder.algo.edgemine.hardware.network_edge_mine import EdgeMineTopology
 
 class EdgeMineNetwork:
 
@@ -16,7 +16,7 @@ class EdgeMineNetwork:
         return predecessors
 
     def get_latest_activity_with_case_id_mfp(self, case_id, node_id):
-        self.network.send(2)
+        self.network.send(10)
         return self.topology.get_node(node_id).get_latest_activity_with_case_id(case_id)
             
     def inform_predecessor(self, case_id, node_id, activity):

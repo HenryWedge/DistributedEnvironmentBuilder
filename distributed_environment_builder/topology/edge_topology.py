@@ -16,9 +16,9 @@ class EdgeTopology:
         computing_topology.add_network("net", network)
 
         for i in range(self.node_count):
-            cpu = CpuInstruction(lambda p: p, lambda p: p)
-            storage_write = StorageInstruction(lambda p: p, lambda p: p)
-            network_send = NetworkInstruction(lambda p: p, lambda p: p)
+            cpu = CpuInstruction(lambda p: p, lambda p: p, 10)
+            storage_write = StorageInstruction(lambda p: p, lambda p: p, 1000)
+            network_send = NetworkInstruction(lambda p: p, lambda p: p, 10)
 
             computing_topology.add_computing_node(
                 name=f"sensor-{i}",
