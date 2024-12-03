@@ -1,5 +1,7 @@
 from typing import List
 
+from distributed_environment_builder.algo.dfgminer.hardware.cpu_dfg_miner import CpuDfgMiner
+from distributed_environment_builder.algo.edgemine.hardware.cpu_edge_mine import EdgeMineCpu
 from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner import NetworkAccessDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner_intermediary import NetworkAccessDfgMinerIntermediary
@@ -10,6 +12,7 @@ from process_mining_core.datastructure.core.model.directly_follows_graph import 
 class DfgMinerIntermediary(AbstractAlgorithm):
 
     def __init__(self):
+        self.cpu = None
         self.network_intermediary = None
         self.network_source = None
 
@@ -19,6 +22,7 @@ class DfgMinerIntermediary(AbstractAlgorithm):
             computing_topology: ComputingTopology):
         
         computing_node = computing_topology.get_computing_node(node_id)
+        self.cpu: CpuDfgMiner = CpuDfgMiner(computing_node.cpu)
         self.network_source: NetworkAccessDfgMiner = NetworkAccessDfgMiner(
             node_id,
             computing_node.network,
@@ -44,5 +48,5 @@ class DfgMinerIntermediary(AbstractAlgorithm):
             return None
         resulting_directly_follows_graph = directly_follows_graphs[0]
         for dfg in directly_follows_graphs:
-            resulting_directly_follows_graph = DirectlyFollowsGraphMerger().merge_directly_follows_graph(dfg, resulting_directly_follows_graph)
+            resulting_directly_follows_graph = self.cpu.merge_dfgs(resulting_directly_follows_graph, dfg)
         return resulting_directly_follows_graph

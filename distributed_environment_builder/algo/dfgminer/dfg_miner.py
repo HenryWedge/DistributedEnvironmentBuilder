@@ -3,7 +3,7 @@ from typing import Dict, Any, List
 from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
 from distributed_environment_builder.algo.dfgminer.hardware.cpu_dfg_miner import CpuDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner import NetworkAccessDfgMiner
-from distributed_environment_builder.algo.dfgminer.hardware.storage import StorageDfgMiner
+from distributed_environment_builder.algo.dfgminer.hardware.storage_dfg_miner import StorageDfgMiner
 from distributed_environment_builder.algo.dfgminer.dfg_miner_abstract import AbstractDfgMiner
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 from process_mining_core.datastructure.converter.directly_follows_graph_merger import DirectlyFollowsGraphMerger
@@ -68,5 +68,5 @@ class DfgMiner(AbstractDfgMiner, AbstractAlgorithm):
             return None
         resulting_directly_follows_graph = directly_follows_graphs[0]
         for dfg in directly_follows_graphs:
-            resulting_directly_follows_graph = DirectlyFollowsGraphMerger().merge_directly_follows_graph(dfg, resulting_directly_follows_graph)
+            resulting_directly_follows_graph = self.cpu.merge_dfgs(resulting_directly_follows_graph, dfg)
         return resulting_directly_follows_graph

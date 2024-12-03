@@ -23,11 +23,9 @@ class StorageDfgMiner:
         self.storage.store(payload=1)
 
     def get_latest_event_with_case_id(self, case_id) -> Event | None:
-        self.storage.store(payload=1)
         if case_id in self.events:
             return self.events[case_id]
         return None
 
     def get_all_directly_follows_relations(self) -> Dict[DirectlyFollowsRelation, int]:
-        self.storage.store(payload=1)
         return self.directly_follows_relations

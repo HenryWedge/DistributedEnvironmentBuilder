@@ -18,7 +18,7 @@ class EdgeDfgMiner(AbstractEdgeMiner):
     ):
         self.storage = None
         self.network = None
-        self.cpu = None
+        self.cpu: EdgeMineCpu = None
         self.node_id = None
 
     def assign_to_node(
@@ -73,7 +73,7 @@ class EdgeDfgMiner(AbstractEdgeMiner):
             return None
         resulting_directly_follows_graph = directly_follows_graphs[0]
         for dfg in directly_follows_graphs:
-            resulting_directly_follows_graph = DirectlyFollowsGraphMerger().merge_directly_follows_graph(dfg, resulting_directly_follows_graph)
+            resulting_directly_follows_graph = self.cpu.merge_dfgs(dfg, resulting_directly_follows_graph)
         return resulting_directly_follows_graph
 
     def inform_predecessor(self, case_id, node_id, activity):

@@ -23,14 +23,16 @@ class EdgeMineStorage:
         if directly_follows_relation in relations:
             relations[directly_follows_relation] = relations[directly_follows_relation] + 1
         else:
-            self.storage.store(1)
+            self.storage.store(2)
             relations[directly_follows_relation] = 1
 
     def get_directly_follows_relations(self) -> DirectlyFollowsGraph:
         return self._directly_follows_graph
 
     def store_latest_event_for_case_id(self, case_id, event):
-        self.storage.store(1)
+        if case_id not in self._latest_event_per_case_id:
+            self.storage.store(1)
+
         self._latest_event_per_case_id[case_id] = event
 
     def store_case_successor(self, case_id, node_id):
