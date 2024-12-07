@@ -2,6 +2,7 @@ from typing import Dict, List
 from distributed_environment_builder.algo.dfgminer.hardware.network_dfg_miner import Network
 from distributed_environment_builder.infrastructure.computing_node import ComputingNode
 
+
 class ComputingTopology:
 
     def __init__(
@@ -40,6 +41,10 @@ class ComputingTopology:
             if network.get_label() == label:
                 return network
 
+    def get_labeled_network_list_for_computing_node(self, label: str, computing_node_id: str) -> List[Network]:
+        return [network for network in self.get_network_for_computing_node(computing_node_id) if
+                network.get_label() == label]
+
     def get_nodes_with_label(self, label: str):
         result = []
         for key in self.computing_nodes:
@@ -69,9 +74,16 @@ class ComputingTopology:
             result[f"net-{computing_node}"] = self.computing_nodes[computing_node].network
         return result
 
-    def increase_network_capacities(self, new_capacity):
-        networks = self.get_networks()
-        for network in self.get_networks():
+    def get_networks_with_label(self, label):
+        result = dict()
+        for computing_node in self.computing_nodes:
+            if self.computing_nodes[computing_node].get_label() == label:
+                result[f"net-{computing_node}"] = self.computing_nodes[computing_node].network
+        return result
+
+    def increase_network_capacities(self, new_capacity, label):
+        networks = self.get_networks_with_label(label)
+        for network in networks:
             networks[network].adjust_capacity(new_capacity)
 
     def reset(self):

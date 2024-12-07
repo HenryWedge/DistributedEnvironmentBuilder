@@ -17,6 +17,6 @@ class NetworkAccessDfgMinerIntermediary:
             directly_follows_graph = node.get_directly_follows_graph()
             self.network.send(payload=1)
             if directly_follows_graph:
+                self.network.send(payload=1)
                 result.append(directly_follows_graph)
-        self.network.send(payload=len(result))
         return result

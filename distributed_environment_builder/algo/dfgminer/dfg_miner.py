@@ -53,11 +53,10 @@ class DfgMiner(AbstractDfgMiner, AbstractAlgorithm):
         directly_follows_relations: Dict[
             DirectlyFollowsRelation, int] = self.storage.get_all_directly_follows_relations()
         counted_relations: Dict[tuple[Any, Any], int] = dict()
-        start_activities = []
         for dfr in directly_follows_relations:
             counted_relations[dfr.to_pair()] = directly_follows_relations[dfr]
 
-        return DirectlyFollowsGraph(counted_relations, start_activities, [])
+        return DirectlyFollowsGraph(counted_relations, [], [])
 
     def get_directly_follows_graph_request(self) -> DirectlyFollowsGraph:
         results = self.network.get_directly_follows_graph()

@@ -17,7 +17,15 @@ class Network:
         all_nodes: List[AbstractDfgMiner] = []
         for node in self.nodes:
             #  TODO remove this HACK!
-            if node != own_node_id and "intermediary" not in node:
+            if node != own_node_id and "sensor" in node:
+                all_nodes.append(self.nodes[node])
+        return all_nodes
+
+    def get_all_cloud_nodes(self, own_node_id):
+        all_nodes: List[AbstractDfgMiner] = []
+        for node in self.nodes:
+            #  TODO remove this HACK!
+            if node != own_node_id and "cloud" in node:
                 all_nodes.append(self.nodes[node])
         return all_nodes
 

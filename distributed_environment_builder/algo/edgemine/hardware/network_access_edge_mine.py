@@ -26,6 +26,7 @@ class EdgeMineNetwork:
     def get_directly_follows_graph(self):
         result = []
         for node in self.topology.get_all_nodes(self.own_node_id):
+            self.network.send(1)
             result.append(node.get_directly_follows_graph())
         return result
 

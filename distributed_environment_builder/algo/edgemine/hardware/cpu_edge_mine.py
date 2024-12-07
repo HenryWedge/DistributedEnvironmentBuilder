@@ -9,5 +9,6 @@ class EdgeMineCpu:
         self.cpu = cpu
 
     def merge_dfgs(self, dfg1: DirectlyFollowsGraph, dfg2: DirectlyFollowsGraph):
-        self.cpu.compute(len(dfg1.relations) + len(dfg2.relations))
+        #self.cpu.compute(len(dfg1.relations) + len(dfg2.relations))
+        self.cpu.compute(1)
         return DirectlyFollowsGraphMerger().merge_directly_follows_graph(dfg1, dfg2)

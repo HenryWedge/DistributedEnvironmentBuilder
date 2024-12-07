@@ -1,8 +1,0 @@
-kind: sink
-name: dfg-sink-0
-spec:
-  type: dfgMiner
-  senderId: "node1"
-  network: "net0"
-  dataSourceRefs:
-    - "GoodsDelivery"

@@ -1,7 +1,0 @@
-kind: sink
-name: central-1
-spec:
-  type: centralDfgMiner
-  senderId: "central-1"
-  network: "net1"
-  dataSourceRefs: []

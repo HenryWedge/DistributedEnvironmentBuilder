@@ -1,6 +1,7 @@
-from typing import List
+from typing import List, Dict, Any
 
 from process_mining_core.datastructure.converter.directly_follows_graph_merger import DirectlyFollowsGraphMerger
+from process_mining_core.datastructure.core.directly_follows_relation import DirectlyFollowsRelation
 from process_mining_core.datastructure.core.event import Event
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
 
@@ -18,6 +19,13 @@ class CpuDfgMiner:
                 event_with_largest_timestamp = event
         return event_with_largest_timestamp
 
+    def build_dfg(self, directly_follows_relations: Dict[DirectlyFollowsRelation, int]) -> DirectlyFollowsGraph:
+        counted_relations: Dict[tuple[Any, Any], int] = dict()
+        for dfr in directly_follows_relations:
+            self.cpu.compute(1)
+            counted_relations[dfr.to_pair()] = directly_follows_relations[dfr]
+        return DirectlyFollowsGraph(counted_relations, [], [])
+
     def merge_dfgs(self, dfg1: DirectlyFollowsGraph, dfg2: DirectlyFollowsGraph):
-        self.cpu.compute(len(dfg1.relations) + len(dfg2.relations))
+        self.cpu.compute(1)
         return DirectlyFollowsGraphMerger().merge_directly_follows_graph(dfg1, dfg2)

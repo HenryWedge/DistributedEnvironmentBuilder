@@ -1,4 +1,8 @@
+from typing import List
+
 from distributed_environment_builder.algo.dfgminer.hardware.network_dfg_miner import Network
+from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
+
 
 class NetworkAccessDfgMiner:
 
@@ -16,7 +20,7 @@ class NetworkAccessDfgMiner:
                 result.append(latest_event)
         return result
 
-    def get_directly_follows_graph(self):
+    def get_directly_follows_graph(self) -> List[DirectlyFollowsGraph]:
         result = []
         for node in self.topology.get_all_nodes(self.node_id):
             self.network.send(payload=1)

@@ -1,8 +1,0 @@
-kind: sink
-name: dfg-sink-1
-spec:
-  type: dfgMiner
-  senderId: "node2"
-  network: "net0"
-  dataSourceRefs:
-    - "MaterialPreparation"

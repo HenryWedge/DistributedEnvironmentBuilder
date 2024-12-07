@@ -10,25 +10,16 @@ class EdgeTopology:
     def __init__(self, node_count):
         self.node_count = node_count
 
-    def get_infrastructure(self):
+    def get_infrastructure(self, node_constructor):
         computing_topology = ComputingTopology()
         network = Network("sensor")
         computing_topology.add_network("net", network)
 
         for i in range(self.node_count):
-            cpu = CpuInstruction(lambda p: p, lambda p: p, 1000)
-            storage_write = StorageInstruction(lambda p: p, lambda p: p, 100)
-            network_send = NetworkInstruction(lambda p: p, lambda p: p, 10)
-
+            node_id = f"sensor-{i}"
             computing_topology.add_computing_node(
-                name=f"sensor-{i}",
-                computing_node=ComputingNode(
-                    name=f"sensor-{i}",
-                    label="sensor",
-                    cpu=cpu,
-                    memory=storage_write,
-                    network=network_send
-                ),
+                name=node_id,
+                computing_node=node_constructor(node_id),
                 network_ids=["net"]
             )
 
