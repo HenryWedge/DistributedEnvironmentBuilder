@@ -1,15 +1,16 @@
 from typing import List
 
 from distributed_environment_builder.algo.dfgminer.hardware.cpu_dfg_miner import CpuDfgMiner
-from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
+from distributed_environment_builder.benchmark.abstract_algorithm import Algorithm
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner import NetworkAccessDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.network_access_dfg_miner_intermediary import NetworkAccessDfgMinerIntermediary
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
 
-class DfgMinerIntermediary(AbstractAlgorithm):
+class DfgMinerIntermediary(Algorithm):
 
     def __init__(self):
+        super().__init__(protocol_ids=["fog"])
         self.cpu = None
         self.network_intermediary = None
         self.network_source_list = []

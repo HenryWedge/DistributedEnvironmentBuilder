@@ -4,18 +4,18 @@ from distributed_environment_builder.algo.edgemine.edge_miner_abstract import Ab
 from distributed_environment_builder.algo.edgemine.hardware.cpu_edge_mine import EdgeMineCpu
 from distributed_environment_builder.algo.edgemine.hardware.network_access_edge_mine import EdgeMineNetwork
 from distributed_environment_builder.algo.edgemine.hardware.storage_edge_mine import EdgeMineStorage
+from distributed_environment_builder.benchmark.abstract_algorithm import Algorithm
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
-from process_mining_core.datastructure.converter.directly_follows_graph_merger import DirectlyFollowsGraphMerger
 from process_mining_core.datastructure.core.directly_follows_relation import DirectlyFollowsRelation
 from process_mining_core.datastructure.core.event import Event
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
 
 
-class EdgeDfgMiner(AbstractEdgeMiner):
+class EdgeDfgMiner(Algorithm):
 
-    def __init__(
-            self
-    ):
+    def __init__(self):
+
+        super().__init__(["sensor"])
         self.storage = None
         self.network = None
         self.cpu: EdgeMineCpu = None

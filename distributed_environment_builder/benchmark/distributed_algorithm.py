@@ -1,27 +1,16 @@
-from typing import Dict, Any
+from typing import Dict, Callable
 
-from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
-from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
+from distributed_environment_builder.benchmark.abstract_algorithm import Algorithm
+
 
 class DistributedAlgorithm:
 
-    def __init__(self, computing_topology: ComputingTopology):
-        self._computing_topology = computing_topology
-        self._algorithm_nodes: Dict[str, Any] = dict()
+    def __init__(self):
+        self._algorithms: Dict[str, Callable[[], Algorithm]] = dict()
 
-    def add_algorithm(self, algorithm_node_id, computing_node_id, algorithm: AbstractAlgorithm):
-        network_topologies = self._computing_topology.get_network_for_computing_node(computing_node_id)
-        for network_topology in network_topologies:
-            network_topology.add_node(algorithm_node_id, algorithm)
+    def add_algorithm(self, key: str, algorithm: Callable[[], Algorithm]):
+        self._algorithms[key] = algorithm
+        return self
 
-        algorithm.assign_to_node(
-            node_id=computing_node_id,
-            computing_topology=self._computing_topology
-        )
-        self._algorithm_nodes[algorithm_node_id] = algorithm
-
-    def get_computing_topology(self):
-        return self._computing_topology
-
-    def get_algorithm(self, algorithm_node_id):
-        return self._algorithm_nodes[algorithm_node_id]
+    def create_algorithm_of_key(self, key: str):
+        return self._algorithms[key]()

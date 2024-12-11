@@ -1,14 +1,15 @@
 from distributed_environment_builder.algo.dfgminer.hardware.cpu_dfg_miner import CpuDfgMiner
 from distributed_environment_builder.algo.dfgminer.hardware.storage_dfg_miner import StorageDfgMiner
-from distributed_environment_builder.benchmark.abstract_algorithm import AbstractAlgorithm
+from distributed_environment_builder.benchmark.abstract_algorithm import Algorithm
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 from process_mining_core.datastructure.core.directly_follows_relation import DirectlyFollowsRelation
 from process_mining_core.datastructure.core.event import Event
 
 
-class DfgMinerCentral(AbstractAlgorithm):
+class DfgMinerCentral(Algorithm):
 
     def __init__(self):
+        super().__init__(["cloud"])
         self.cpu: CpuDfgMiner = None
         self.storage = None
         self.network_intermediary = None

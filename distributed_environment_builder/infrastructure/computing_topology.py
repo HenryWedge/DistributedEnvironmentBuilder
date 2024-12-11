@@ -1,21 +1,14 @@
 from typing import Dict, List
-from distributed_environment_builder.algo.dfgminer.hardware.network_dfg_miner import Network
+from distributed_environment_builder.infrastructure.network_dfg_miner import Network
 from distributed_environment_builder.infrastructure.computing_node import ComputingNode
-
 
 class ComputingTopology:
 
     def __init__(
-            self,
-            computing_nodes=None,
-            networks=None
+            self
     ):
-        if computing_nodes is None:
-            computing_nodes = dict()
-        if networks is None:
-            networks = dict()
-        self.computing_nodes: Dict[str, ComputingNode] = computing_nodes
-        self.networks: Dict[str, Network] = networks
+        self.computing_nodes: Dict[str, ComputingNode] = dict()
+        self.networks: Dict[str, Network] = dict()
         self.node_network_mapping: Dict[str, List[str]] = dict()
 
     def add_computing_node(self, name, computing_node: ComputingNode, network_ids: List[str]):
@@ -34,6 +27,13 @@ class ComputingTopology:
         for network in networks:
             result.append(self.networks[network])
         return result
+
+
+    def get_receive_nodes(self):
+        return self.get_nodes_with_label("sensor")
+
+    def get_request_nodes(self):
+        return self.get_nodes_with_label("sensor")
 
     def get_labeled_network_for_computing_node(self, label: str, computing_node_id: str) -> Network:
         networks = self.get_network_for_computing_node(computing_node_id)

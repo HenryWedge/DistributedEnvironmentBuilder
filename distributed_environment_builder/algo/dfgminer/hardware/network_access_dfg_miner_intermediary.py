@@ -1,6 +1,6 @@
 from typing import List
 
-from distributed_environment_builder.algo.dfgminer.hardware.network_dfg_miner import Network
+from distributed_environment_builder.infrastructure.network_dfg_miner import Network
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
 
 
@@ -13,7 +13,7 @@ class NetworkAccessDfgMinerIntermediary:
 
     def get_directly_follows_graph(self) -> List[DirectlyFollowsGraph]:
         result = []
-        for node in self.topology.get_all_nodes_intermediary(self.node_id):
+        for node in self.topology.get_all_nodes_with_protocol(self.node_id, "fog"):
             directly_follows_graph = node.get_directly_follows_graph()
             self.network.send(payload=1)
             if directly_follows_graph:

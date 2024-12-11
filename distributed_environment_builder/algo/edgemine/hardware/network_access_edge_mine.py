@@ -1,16 +1,18 @@
+from distributed_environment_builder.infrastructure.network_dfg_miner import Network
 from distributed_environment_builder.infrastructure.hii.network_hii import NetworkInstruction
-from distributed_environment_builder.algo.edgemine.hardware.network_edge_mine import EdgeMineTopology
+
+
 
 class EdgeMineNetwork:
 
     def __init__(self, own_node_id, topology, network):
-        self.topology: EdgeMineTopology = topology
+        self.topology: Network = topology
         self.own_node_id: str = own_node_id
         self.network: NetworkInstruction = network
 
     def get_latest_activity_with_case_id(self, case_id):
         predecessors = []
-        for node in self.topology.get_all_nodes(self.own_node_id):
+        for node in self.topology.get_all_nodes_with_protocol(self.own_node_id, protocol_label="sensor"):
             self.network.send(1)
             node.get_latest_event_with_case_id(case_id)
         return predecessors
@@ -25,7 +27,7 @@ class EdgeMineNetwork:
 
     def get_directly_follows_graph(self):
         result = []
-        for node in self.topology.get_all_nodes(self.own_node_id):
+        for node in self.topology.get_all_nodes_with_protocol(self.own_node_id, protocol_label="sensor"):
             self.network.send(1)
             result.append(node.get_directly_follows_graph())
         return result

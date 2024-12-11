@@ -1,4 +1,4 @@
-from distributed_environment_builder.algo.dfgminer.hardware.network_dfg_miner import Network
+from distributed_environment_builder.infrastructure.network_dfg_miner import Network
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 
 class CloudTopology:

@@ -1,8 +1,7 @@
 from typing import List
 
-from distributed_environment_builder.algo.dfgminer.hardware.network_dfg_miner import Network
+from distributed_environment_builder.infrastructure.network_dfg_miner import Network
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
-
 
 class NetworkAccessDfgMiner:
 
@@ -13,7 +12,7 @@ class NetworkAccessDfgMiner:
 
     def get_latest_event_with_case_id(self, case_id):
         result = []
-        for node in self.topology.get_all_nodes(self.node_id):
+        for node in self.topology.get_all_nodes_with_protocol(self.node_id, "sensor"):
             self.network.send(payload=1)
             latest_event = node.get_latest_event_with_case_id(case_id)
             if latest_event:
@@ -22,7 +21,7 @@ class NetworkAccessDfgMiner:
 
     def get_directly_follows_graph(self) -> List[DirectlyFollowsGraph]:
         result = []
-        for node in self.topology.get_all_nodes(self.node_id):
+        for node in self.topology.get_all_nodes_with_protocol(self.node_id, "sensor"):
             self.network.send(payload=1)
             result.append(node.get_directly_follows_graph())
         return result
