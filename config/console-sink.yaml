@@ -1,0 +1,18 @@
+kind: sink
+name: console-sink
+spec:
+  type: console
+  id: "Sensor"
+  dataSourceRefs:
+    - "GoodsDelivery"
+    - "MaterialPreparation"
+    - "AssemblyLineSetup"
+    - "Assembling"
+    - "QualityControl"
+    - "Packaging"
+    - "Shipping"
+    - "A"
+    - "B"
+    - "C"
+    - "D"
+    - "E"

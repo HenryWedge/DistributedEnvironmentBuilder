@@ -1,8 +1,6 @@
 from distributed_environment_builder.infrastructure.network_dfg_miner import Network
 from distributed_environment_builder.infrastructure.hii.network_hii import NetworkInstruction
 
-
-
 class EdgeMineNetwork:
 
     def __init__(self, own_node_id, topology, network):

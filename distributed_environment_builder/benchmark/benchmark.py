@@ -62,11 +62,7 @@ class Benchmark:
 
     def check_slo(self, resource, load):
         self.init_algorithm()
-
-        # TODO here uncomment
-        #self.computing_topology.increase_network_capacities(resource, self.topology[2])
         self.computing_topology.increase_network_capacities(resource, "sensor")
-        i = 0
         self.event_factory.run(
             hook=lambda: self.hook(load)
         )
@@ -100,16 +96,16 @@ class Benchmark:
             is_increase=True
         )
 
-    def load_capacity_experiment(self, test_values):
+    def load_capacity_experiment(self, test_values, accuracy):
         result = []
         for test_value in test_values:
-            result.append((test_value, self.load_capacity(test_value, 100, 10)))
+            result.append((test_value, self.load_capacity(test_value, 100, accuracy)))
         return result
 
-    def resource_demand_experiment(self, test_values):
+    def resource_demand_experiment(self, test_values, accuracy):
         result = []
         for test_value in test_values:
-            result.append((test_value, self.resource_demand(test_value, 100, 10)))
+            result.append((test_value, self.resource_demand(test_value, 100, accuracy)))
         return result
 
     def run(self, initial_guess, accuracy, slo, is_increase):

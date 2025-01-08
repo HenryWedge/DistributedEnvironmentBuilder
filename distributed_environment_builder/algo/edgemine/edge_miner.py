@@ -1,6 +1,5 @@
 from typing import List
 
-from distributed_environment_builder.algo.edgemine.edge_miner_abstract import AbstractEdgeMiner
 from distributed_environment_builder.algo.edgemine.hardware.cpu_edge_mine import EdgeMineCpu
 from distributed_environment_builder.algo.edgemine.hardware.network_access_edge_mine import EdgeMineNetwork
 from distributed_environment_builder.algo.edgemine.hardware.storage_edge_mine import EdgeMineStorage
