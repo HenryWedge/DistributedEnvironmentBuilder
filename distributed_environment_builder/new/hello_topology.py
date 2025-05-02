@@ -21,5 +21,8 @@ class HelloTopology:
     def deploy_algorithm(self, node_id, algorithm):
         algorithm.assign_to_node(self.nodes[node_id])
 
-    def run(self, algorithm, node_id):
+    def deploy(self, algorithm, node_id):
         algorithm.run_on_node(self.nodes[node_id])
+
+    def run(self, node_id):
+        self.nodes[node_id].run()
