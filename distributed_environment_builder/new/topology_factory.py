@@ -1,16 +1,13 @@
 import yaml
 
 from hello_network import HelloNetwork
+from hello_node import HelloNode
 from hello_topology import HelloTopology
 from network.fw.http_network import HttpNetwork
 from network.fw.mock_network import MockNetwork
-from nodes.hello_node import HelloNode
-from nodes.mock_hello_node import MockHelloNode
 from storage.mock_hello_storage import ListStorage
 
-
 class TopologyFactory:
-
     def __init__(self, filename):
         with open(filename) as file:
             config = yaml.safe_load(file)
@@ -22,9 +19,9 @@ class TopologyFactory:
         for node in self.nodes:
             if node["type"] == "mock":
                 node_name = node["name"]
-                new_node = MockHelloNode(
+                new_node = HelloNode(
                     node_name,
-                    MockNetwork(self.network_address_resolution),
+                    MockNetwork(self.network_address_resolution, node["delay"]),
                     ListStorage()
                 )
                 self.topology.add_node(
@@ -36,11 +33,10 @@ class TopologyFactory:
                 node_name = node["name"]
                 port = node["port"]
                 new_node = HelloNode(
-                        "node1",
-                        port,
-                        HttpNetwork(self.network_address_resolution),
-                        ListStorage()
-                    )
+                    "node1",
+                    HttpNetwork(self.network_address_resolution, port),
+                    ListStorage()
+                )
                 self.topology.add_node(
                     node_name,
                     new_node

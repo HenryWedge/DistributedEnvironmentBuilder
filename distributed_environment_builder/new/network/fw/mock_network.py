@@ -1,7 +1,11 @@
+import time
+
+
 class MockNetwork:
 
-    def __init__(self, network):
+    def __init__(self, network, delay):
         self.network_functions = dict()
+        self.delay = delay
         self.network = network
 
     def add_network_function(self, name, func):
@@ -11,6 +15,7 @@ class MockNetwork:
         return self.network_functions[name]
 
     def send_message(self, node_id, endpoint, payload):
+        time.sleep(self.delay)
         node = self.network.get_address(node_id)
         return node.network.network_functions[endpoint](payload=payload)
 

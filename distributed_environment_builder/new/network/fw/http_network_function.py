@@ -5,7 +5,8 @@ from network.fw.network_function import NetworkFunction
 
 class HttpNetworkFunction(NetworkFunction):
 
-    def __init__(self, func, endpoint):
+    def __init__(self, app, func, endpoint):
+        self.app = app
         self.func = func
         self.endpoint = endpoint
 
@@ -13,7 +14,7 @@ class HttpNetworkFunction(NetworkFunction):
         return requests.post(url=f"http://{address}/{endpoint}", json=payload).content
 
     def run(self, node):
-        node.app.add_url_rule(
+        self.app.add_url_rule(
             f"/{self.endpoint}",
             methods=["GET", "POST"],
             endpoint=self.endpoint,

@@ -1,5 +1,7 @@
 nodes:
   - name: node1
     type: mock
+    delay: 1
   - name: node2
     type: mock
+    delay: 2
