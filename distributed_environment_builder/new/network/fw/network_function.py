@@ -3,8 +3,8 @@ from abc import ABC
 
 class NetworkFunction(ABC):
 
-    def call(self, payload):
+    def call(self, address, endpoint, payload):
         pass
 
-    def run(self):
+    def run(self, node):
         pass

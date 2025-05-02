@@ -1,0 +1,14 @@
+network:
+  node1:
+    node2:
+      latency: 10
+  node2:
+    node1:
+      latency: 10
+nodes:
+  - name: node1
+    storage: list
+    network: http
+  - name: node2
+    storage: list
+    network: http

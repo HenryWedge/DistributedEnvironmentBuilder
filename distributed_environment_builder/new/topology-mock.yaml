@@ -8,7 +8,7 @@ network:
 nodes:
   - name: node1
     storage: list
-    network:
+    network: mock
   - name: node2
     storage: list
-    network:
+    network: mock
