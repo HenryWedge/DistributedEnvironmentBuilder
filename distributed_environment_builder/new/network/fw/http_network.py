@@ -17,6 +17,9 @@ class HttpNetwork:
     def get(self, name):
         return self.network_functions[name]
 
+    def get_address(self):
+        return f"localhost:{self.port}"
+
     def send_message(self, node_id, endpoint, payload):
         address = self.network.get_address(node_id)
         return self.network_functions[endpoint].call(address, endpoint, payload)

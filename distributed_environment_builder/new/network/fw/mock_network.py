@@ -14,10 +14,13 @@ class MockNetwork:
     def get(self, name):
         return self.network_functions[name]
 
+    def get_address(self):
+        return self
+
     def send_message(self, node_id, endpoint, payload):
         time.sleep(self.delay)
-        node = self.network.get_address(node_id)
-        return node.network.network_functions[endpoint](payload=payload)
+        node_network = self.network.get_address(node_id)
+        return node_network.network_functions[endpoint](payload=payload)
 
     def run(self, node):
         pass

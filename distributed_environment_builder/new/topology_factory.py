@@ -13,7 +13,7 @@ class TopologyFactory:
             config = yaml.safe_load(file)
             self.topology = HelloTopology()
             self.nodes = config["nodes"]
-            self.network_address_resolution = HelloNetwork()
+            #self.network_address_resolution = HelloNetwork()
 
     def start_nodes(self):
         for node in self.nodes:
@@ -21,24 +21,24 @@ class TopologyFactory:
                 node_name = node["name"]
                 new_node = HelloNode(
                     node_name,
-                    MockNetwork(self.network_address_resolution, node["delay"]),
+                    MockNetwork(self.topology.network_address_resolution, node["delay"]),
                     ListStorage()
                 )
                 self.topology.add_node(
                     node["name"],
                     new_node
                 )
-                self.network_address_resolution.add_network_address(node_name, new_node)
+                #self.network_address_resolution.add_network_address(node_name, new_node.network)
             else:
                 node_name = node["name"]
                 port = node["port"]
                 new_node = HelloNode(
                     "node1",
-                    HttpNetwork(self.network_address_resolution, port),
+                    HttpNetwork(self.topology.network_address_resolution, port),
                     ListStorage()
                 )
                 self.topology.add_node(
                     node_name,
                     new_node
                 )
-                self.network_address_resolution.add_network_address(node_name, f"localhost:{port}")
+                #self.network_address_resolution.add_network_address(node_name, f"localhost:{port}")
