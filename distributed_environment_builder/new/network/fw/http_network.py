@@ -13,8 +13,8 @@ class HttpNetwork:
         return self.network_functions[name]
 
     def send_message(self, node_id, endpoint, payload):
-        node_id = self.network.get_address(node_id)
-        return self.network_functions[endpoint].call(node_id, endpoint, payload)
+        address = self.network.get_address(node_id)
+        return self.network_functions[endpoint].call(address, endpoint, payload)
 
     def run(self, node):
         for network_function in self.network_functions:
