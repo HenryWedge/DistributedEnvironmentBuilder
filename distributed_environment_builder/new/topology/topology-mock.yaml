@@ -1,0 +1,45 @@
+nodes:
+  - name: node0
+    type: mock
+    label:
+      datasource: "GoodsDelivery"
+      category: edge
+    delay: 0
+  - name: node1
+    type: mock
+    label:
+      datasource: "MaterialPreparation"
+      category: edge
+    delay: 0
+  - name: node2
+    type: mock
+    label:
+      datasource: "AssemblyLineSetup"
+      category: edge
+    delay: 0
+  - name: node3
+    type: mock
+    label:
+      datasource: "Assembling"
+      category: edge
+    delay: 0
+  - name: node4
+    type: mock
+    label:
+      datasource: "QualityControl"
+      category: edge
+    delay: 0
+  - name: node5
+    type: mock
+    label:
+      datasource: "Packaging"
+      category: edge
+    delay: 0
+  - name: node6
+    type: mock
+    label:
+      datasource: "Shipping"
+      category: edge
+    delay: 0
+assignment:
+  helloAlgo: edge

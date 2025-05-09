@@ -11,8 +11,8 @@ class HttpNetwork:
         self.network = network
         self.port = port
 
-    def add_network_function(self, name, func):
-        self.network_functions[name] = HttpNetworkFunction(self.app, func, name)
+    def add_network_function(self, name, func, clazz):
+        self.network_functions[name] = HttpNetworkFunction(self.app, func, name, clazz)
 
     def get(self, name):
         return self.network_functions[name]

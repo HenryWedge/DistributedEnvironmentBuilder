@@ -1,26 +1,41 @@
 import sys
+from time import sleep
 
+from distributed_event_factory.event_factory import EventFactory
 from hello_algorithm import SayHelloAlgorithm
+from node_sink import NodeSink
+
+def run_event_factory(nodes):
+    sleep(1)
+    content_root = "../../../EventFactoryConfigs"
+    event_factory = EventFactory()
+    event_factory \
+        .add_directory(f"{content_root}/datasource/assemblyline") \
+        .add_file(f"{content_root}/simulation/countbased.yaml") \
+        # .add_file(f"{content_root}/sink/http-sink.yaml") \
+
+    for node in nodes:
+        event_factory.add_sink(
+            node.datasource,
+            NodeSink(node, [node.datasource])
+        )
+    event_factory.run()
+
 from topology_factory import TopologyFactory
 
 def parse_topology(file):
     return TopologyFactory(file).parse()
 
-def run(topology, node_id):
-    topology.deploy(SayHelloAlgorithm(), "node1")
-    topology.deploy(SayHelloAlgorithm(), "node2")
+def run(topology, algo, node_id):
+    topology.deploy(algo, "node0")
+    topology.deploy(algo, "node1")
     topology.run(node_id)
 
-def run_mock(node_id):
-    topology = parse_topology("topology-mock.yaml")
-    run(topology, node_id=node_id)
-    topology.get_node("node1").network.send_message("node2", "hi", dict())
-    topology.get_node("node1").network.send_message("node2", "hello", {"message": "Max"})
-
-def run_http(node_id):
-    topology = parse_topology("topology-http.yaml")
-    run(topology, node_id)
-
 if __name__ == '__main__':
-    #run_http(sys.argv[1])
-    run_mock(sys.argv[1])
+    algo = lambda: SayHelloAlgorithm()
+    node_id = sys.argv[1]
+
+    topology = parse_topology("topology/topology-mock.yaml")
+    topology.deploy_algorithm_on_nodes_with_category("edge", algo())
+    topology.run_all()
+    run_event_factory(topology.get_nodes())

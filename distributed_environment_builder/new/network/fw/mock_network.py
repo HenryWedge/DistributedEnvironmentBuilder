@@ -8,7 +8,7 @@ class MockNetwork:
         self.delay = delay
         self.network = network
 
-    def add_network_function(self, name, func):
+    def add_network_function(self, name, func, clazz):
         self.network_functions[name] = func
 
     def get(self, name):
@@ -20,7 +20,7 @@ class MockNetwork:
     def send_message(self, node_id, endpoint, payload):
         time.sleep(self.delay)
         node_network = self.network.get_address(node_id)
-        return node_network.network_functions[endpoint](payload=payload)
+        return node_network.network_functions[endpoint](payload)
 
     def run(self, node):
         pass

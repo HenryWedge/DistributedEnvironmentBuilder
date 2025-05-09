@@ -1,0 +1,13 @@
+nodes:
+  - name: node1
+    type: http
+    port: 8082
+    label:
+      datasource: "GoodsDelivery"
+      category: edge
+  - name: node2
+    type: http
+    port: 8084
+    label:
+      datasource: "MaterialPreparation"
+      category: edge

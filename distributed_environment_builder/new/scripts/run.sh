@@ -1,0 +1,1 @@
+docker run --network=host --name=hello-test -e NODE_ID=$1 hello-test

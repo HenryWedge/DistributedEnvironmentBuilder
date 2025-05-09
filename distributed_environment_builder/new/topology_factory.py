@@ -4,7 +4,7 @@ from hello_node import HelloNode
 from hello_topology import HelloTopology
 from network.fw.http_network import HttpNetwork
 from network.fw.mock_network import MockNetwork
-from storage.mock_hello_storage import ListStorage
+from storage.dict_storage import DictStorage
 
 class TopologyFactory:
     def __init__(self, filename):
@@ -20,7 +20,9 @@ class TopologyFactory:
                 new_node = HelloNode(
                     node_name,
                     MockNetwork(self.topology.network_address_resolution, node["delay"]),
-                    ListStorage()
+                    DictStorage(dictionary=dict()),
+                    node["label"]["category"],
+                    node["label"]["datasource"]
                 )
                 self.topology.add_node(
                     node["name"],
@@ -32,7 +34,9 @@ class TopologyFactory:
                 new_node = HelloNode(
                     "node1",
                     HttpNetwork(self.topology.network_address_resolution, port),
-                    ListStorage()
+                    DictStorage(dict()),
+                    node["label"]["category"],
+                    node["label"]["datasource"]
                 )
                 self.topology.add_node(
                     node_name,
