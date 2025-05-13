@@ -1,7 +1,6 @@
 class HelloNetwork:
 
     def __init__(self):
-        self.network_accesses = dict()
         self.addresses = dict()
 
     def add_network_address(self, node_id, address):
@@ -9,3 +8,6 @@ class HelloNetwork:
 
     def get_address(self, node_id):
         return self.addresses[node_id]
+
+    def get_all_addresses(self):
+        return self.addresses

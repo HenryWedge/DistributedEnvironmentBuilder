@@ -9,6 +9,8 @@ class NodeSink(Sink):
         self.node = node
 
     def send(self, event: Event) -> None:
+        print(self.node.network.send_message(self.node.node_id, "conformance", event))
+        print(self.node.network.send_message(event.node, "dfg", None))
         self.node.network.send_message(self.node.node_id, "event", event)
 
     def get_datasource_ref(self):

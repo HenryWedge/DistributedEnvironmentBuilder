@@ -1,0 +1,28 @@
+from abc import ABC, abstractmethod
+
+class Network(ABC):
+
+    @abstractmethod
+    def add_network_function(self, name, func, clazz):
+        pass
+
+    @abstractmethod
+    def get(self, name):
+        pass
+
+    @abstractmethod
+    def get_address(self):
+        pass
+
+    @abstractmethod
+    def send_message(self, node_id, endpoint, payload):
+        pass
+
+    @abstractmethod
+    def broadcast(self, endpoint, payload):
+        pass
+
+    @abstractmethod
+    def run(self, node):
+        pass
+

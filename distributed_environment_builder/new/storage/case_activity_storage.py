@@ -1,4 +1,4 @@
-from storage.case_actity_tuple import CaseActivityTuple
+from process_mining_core.datastructure.core.event import Event
 
 class CaseActivityStorage:
 
@@ -10,5 +10,5 @@ class CaseActivityStorage:
             return self.storage[case_id]
         return None
 
-    def store_activity_for_case(self, case_activity_tuple: CaseActivityTuple):
-        self.storage[case_activity_tuple.case] = case_activity_tuple.activity
+    def store_event_for_case(self, event: Event):
+        self.storage[event.caseid] = event

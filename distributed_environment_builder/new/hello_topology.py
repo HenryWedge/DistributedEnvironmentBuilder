@@ -27,7 +27,7 @@ class HelloTopology:
     def deploy_algorithm_on_nodes_with_category(self, category, algorithm):
         for node in self.get_nodes():
             if node.category == category:
-                self.deploy(algorithm, node.node_id)
+                self.deploy(algorithm(), node.node_id)
 
     def deploy(self, algorithm, node_id):
         algorithm.run_on_node(self.nodes[node_id])

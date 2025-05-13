@@ -18,14 +18,14 @@ class TopologyFactory:
             if node["type"] == "mock":
                 node_name = node["name"]
                 new_node = HelloNode(
-                    node_name,
+                    node["label"]["datasource"],
                     MockNetwork(self.topology.network_address_resolution, node["delay"]),
-                    DictStorage(dictionary=dict()),
+                    lambda: DictStorage(dictionary=dict()),
                     node["label"]["category"],
                     node["label"]["datasource"]
                 )
                 self.topology.add_node(
-                    node["name"],
+                    node["label"]["datasource"],
                     new_node
                 )
             else:
@@ -34,7 +34,7 @@ class TopologyFactory:
                 new_node = HelloNode(
                     "node1",
                     HttpNetwork(self.topology.network_address_resolution, port),
-                    DictStorage(dict()),
+                    lambda: DictStorage(dict()),
                     node["label"]["category"],
                     node["label"]["datasource"]
                 )

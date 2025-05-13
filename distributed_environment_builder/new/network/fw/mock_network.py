@@ -1,7 +1,9 @@
 import time
 
+from network.fw.network import Network
 
-class MockNetwork:
+
+class MockNetwork(Network):
 
     def __init__(self, network, delay):
         self.network_functions = dict()
@@ -16,6 +18,15 @@ class MockNetwork:
 
     def get_address(self):
         return self
+
+    def broadcast(self, endpoint, payload):
+        results = dict()
+        nodes = self.network.get_all_addresses()
+        for node in nodes:
+            result = self.send_message(node, endpoint, payload)
+            if result:
+                results[node] = result
+        return results
 
     def send_message(self, node_id, endpoint, payload):
         time.sleep(self.delay)
