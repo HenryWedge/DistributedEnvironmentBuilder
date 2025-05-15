@@ -1,6 +1,8 @@
 import heapq
 
+from conformance_score import ConformanceScore
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
+from storage.conformance_value import ConformanceValues
 
 
 class MyCompute:
@@ -20,36 +22,23 @@ class MyCompute:
                     predecessor_node = node
         return predecessor_node
 
-    def compute_conformance(self, directly_follows_graph: DirectlyFollowsGraph, current_activity, next_activity):
-        conformance_violations = 0
+    def compute_conformance(self, directly_follows_graph: DirectlyFollowsGraph, last_activity, next_activity):
+        if not last_activity:
+            if next_activity in directly_follows_graph.start_activities:
+                return ConformanceScore(1,0)
+            return ConformanceScore(1,1)
+
         if not self.has_item(directly_follows_graph, next_activity):
-            conformance_violations = conformance_violations + 1
+            return ConformanceScore(1,1)
         else:
-            for dfr in directly_follows_graph.get_relations():
-                if dfr.predecessor == current_activity:
-                    if next_activity in self.get_neighbours(directly_follows_graph, current_activity):
-                        current_activity = next_activity
-                    else:
-                        conformance_violations = conformance_violations + \
-                                                 len(self.get_path_to_activity(directly_follows_graph, current_activity,
-                                                                               next_activity)) - 2
-
-        if not directly_follows_graph.start_activities:
-            print("Help!!!!")
-            return 0
-        else:
-            print("Start activities")
-            print(directly_follows_graph.start_activities)
-
-        shortest_path = self.get_path_to_activity(
-            directly_follows_graph,
-            list(directly_follows_graph.start_activities)[0],
-            next_activity
-        )
-        if not shortest_path or len(shortest_path) == 1:
-            return 1 - conformance_violations
-        else:
-            return 1 - (conformance_violations / (len(shortest_path) - 1))
+            shortest_path = self.get_path_to_activity(directly_follows_graph, last_activity, next_activity)
+            if shortest_path:
+                violations = len(shortest_path) - len({last_activity,next_activity})
+            else:
+                return ConformanceScore(1, 1)
+            if violations == 0:
+                return ConformanceScore(1, 0)
+            return ConformanceScore(violations, violations)
 
     def has_item(self, directly_follows_graph: DirectlyFollowsGraph, item):
         for dfr in directly_follows_graph.get_relations():
@@ -75,6 +64,7 @@ class MyCompute:
             current_distance, current_edge, path = heapq.heappop(priority_queue)
 
             if current_edge == target:
+                print(f"Path {path + [current_edge]}")
                 return path + [current_edge]
 
             if current_distance > distances.get(current_edge, float('inf')):

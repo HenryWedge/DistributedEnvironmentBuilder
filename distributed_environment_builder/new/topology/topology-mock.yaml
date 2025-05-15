@@ -2,43 +2,43 @@ nodes:
   - name: node0
     type: mock
     label:
-      datasource: "GoodsDelivery"
+      datasource: "G1"
       category: edge
     delay: 0
   - name: node1
     type: mock
     label:
-      datasource: "MaterialPreparation"
+      datasource: "G2"
       category: edge
     delay: 0
   - name: node2
     type: mock
     label:
-      datasource: "AssemblyLineSetup"
+      datasource: "G3"
       category: edge
     delay: 0
   - name: node3
     type: mock
     label:
-      datasource: "Assembling"
+      datasource: "G4"
       category: edge
     delay: 0
   - name: node4
     type: mock
     label:
-      datasource: "QualityControl"
+      datasource: "G5"
       category: edge
     delay: 0
   - name: node5
     type: mock
     label:
-      datasource: "Packaging"
+      datasource: "G6"
       category: edge
     delay: 0
   - name: node6
     type: mock
     label:
-      datasource: "Shipping"
+      datasource: "G7"
       category: edge
     delay: 0
 assignment:

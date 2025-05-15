@@ -8,5 +8,4 @@ class DictStorage(Dict):
 
     def __setitem__(self, __key, __value):
         super().__setitem__(__key, __value)
-        print(f"Stored=[key: {__key}, value: {__value}]")
-
+        #print(f"Stored=[key: {__key}, value: {__value}]")

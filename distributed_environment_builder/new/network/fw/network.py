@@ -15,6 +15,10 @@ class Network(ABC):
         pass
 
     @abstractmethod
+    def has_node(self, node_id):
+        pass
+
+    @abstractmethod
     def send_message(self, node_id, endpoint, payload):
         pass
 

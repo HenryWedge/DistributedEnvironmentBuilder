@@ -9,5 +9,8 @@ class HelloNetwork:
     def get_address(self, node_id):
         return self.addresses[node_id]
 
+    def has_node(self, node_id):
+        return node_id in self.addresses
+
     def get_all_addresses(self):
         return self.addresses

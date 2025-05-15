@@ -1,4 +1,5 @@
 from compute.my_compute import MyCompute
+from conformance_score import ConformanceScore
 from network.fw.network import Network
 from process_mining_core.datastructure.core.directly_follows_relation import DirectlyFollowsRelation
 from process_mining_core.datastructure.core.event import Event
@@ -18,6 +19,7 @@ class SayHelloAlgorithm:
         self.network.add_network_function("event", self.process_event, Event)
         self.network.add_network_function("timestamp", self.get_timestamp_of_case, str)
         self.network.add_network_function("conformance", self.get_conformance_of_case, None)
+        self.network.add_network_function("conformance_get", self.conformance_get, None)
         self.network.add_network_function("dfg", self.get_directly_follows_graph, None)
 
     def process_event(self, event):
@@ -36,6 +38,8 @@ class SayHelloAlgorithm:
             predecessor = predecessor_node
         elif last_event:
             predecessor = last_event.activity
+        else:
+            self.storage.store_start_activity(event.activity)
 
         if predecessor:
             self.storage.store_directly_follows_relation(
@@ -44,7 +48,6 @@ class SayHelloAlgorithm:
                     successor=activity
                 )
             )
-        self.storage.update_last_event_of_case(event.caseid, event.activity)
         return ""
 
     def get_timestamp_of_case(self, case_id):
@@ -56,10 +59,34 @@ class SayHelloAlgorithm:
 
     def get_conformance_of_case(self, event):
         conformance_values = self.storage.retrieve_conformance_values(event.caseid)
+
+        last_activity = conformance_values.last_activity
+        print(last_activity)
         dfg: DirectlyFollowsGraph = self.storage.get_directly_follows_graph()
-        conformance = self.cpu.compute_conformance(dfg, conformance_values, event.activity)
+
+        current_conformance = None
+        if last_activity:
+            print("Inner activity")
+            current_conformance = ConformanceScore(conformance_values.conformance.path_length, conformance_values.conformance.conformance_violations)
+        else:
+            for node in dfg.get_predecessors_of_activity(event.activity):
+                if self.network.has_node(node):
+                    print("Inbound activity")
+                    current_conformance = self.network.send_message(node, "conformance_get", event.caseid)
+                    break
+        if not current_conformance:
+            print("Start activity")
+            current_conformance = ConformanceScore(0, 0)
+
+        conformance_update = self.cpu.compute_conformance(dfg, last_activity, event.activity)
+        conformance = current_conformance + conformance_update
         self.storage.update_conformance(event.caseid, conformance)
+        self.storage.update_last_event_of_case(event.caseid, event.activity)
         return conformance
+
+
+    def conformance_get(self, case_id):
+        return self.storage.retrieve_conformance_values(case_id).conformance
 
     def get_directly_follows_graph(self, payload):
         return self.storage.get_directly_follows_graph()

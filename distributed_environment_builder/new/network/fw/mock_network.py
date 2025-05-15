@@ -19,6 +19,9 @@ class MockNetwork(Network):
     def get_address(self):
         return self
 
+    def has_node(self, node_id):
+        return self.network.has_node(node_id)
+
     def broadcast(self, endpoint, payload):
         results = dict()
         nodes = self.network.get_all_addresses()

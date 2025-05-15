@@ -10,6 +10,7 @@ class MyTestCase():
         relations = CountedDirectlyFollowsRelation(dict())
 
         relations.insert(DirectlyFollowsRelation("A", "B"))
+        relations.insert(DirectlyFollowsRelation("B", "B"))
         relations.insert(DirectlyFollowsRelation("B", "C"))
         relations.insert(DirectlyFollowsRelation("C", "D"))
         relations.insert(DirectlyFollowsRelation("B", "E"))
@@ -23,7 +24,7 @@ class MyTestCase():
 
     def test_something(self):
         testee = MyCompute()
-        print(testee.get_path_to_activity(self.get_dfg(), "A", "F"))
+        print(testee.get_path_to_activity(self.get_dfg(), "B", "B"))
 
     def test_conformance(self):
         testee = MyCompute()
@@ -31,4 +32,4 @@ class MyTestCase():
         print(testee.compute_conformance(dfg, "A", "C"))
 
 if __name__ == '__main__':
-    MyTestCase().test_conformance()
+    MyTestCase().test_something()
