@@ -25,9 +25,12 @@ class DfgMiner(AbstractDfgMiner, Algorithm):
             node_id,
             computing_topology: ComputingTopology):
         computing_node = computing_topology.get_computing_node(node_id)
+
+
         self.cpu: CpuDfgMiner = CpuDfgMiner(computing_node.cpu)
         self.storage: StorageDfgMiner = StorageDfgMiner(computing_node.memory)
         network_access = computing_topology.get_labeled_network_for_computing_node("sensor", computing_node.get_name())
+
         self.network: NetworkAccessDfgMiner = NetworkAccessDfgMiner(node_id, computing_node.network, network_access)
 
     def get_latest_event_with_case_id(self, case_id) -> Event | None:

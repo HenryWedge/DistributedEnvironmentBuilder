@@ -39,6 +39,7 @@ class EdgeDfgMiner(Algorithm):
                 self.storage.store_predecessor(node_id)
 
     def receive_event(self, event: Event):
+        print(event)
         self.setup_most_frequent_predecessors()
         self.storage.store_latest_event_for_case_id(event.caseid, event)
         preceding_event, node_id = self._get_all_events_from_others(event.caseid)

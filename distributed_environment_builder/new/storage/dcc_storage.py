@@ -1,18 +1,18 @@
 from process_mining_core.datastructure.core.counted_directly_follows_relation import CountedDirectlyFollowsRelation
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
+from s_conformance_values import SConformanceValues
 from storage.border_activity_storage import BorderActivityStorage
 from storage.case_activity_storage import CaseActivityStorage
 from storage.conformance_storage import ConformanceStorage
-from storage.conformance_value import ConformanceValues
 from storage.storage import Storage
 
 
 class DccStorage(Storage):
 
-    def __init__(self, storage):
-        self.directly_follows_storage: CountedDirectlyFollowsRelation = CountedDirectlyFollowsRelation(storage())
-        self.case_activity_storage: CaseActivityStorage = CaseActivityStorage(storage())
-        self.conformance_storage: ConformanceStorage = ConformanceStorage(storage())
+    def __init__(self, storage_df, storage_case, storage_conformance):
+        self.directly_follows_storage: CountedDirectlyFollowsRelation = CountedDirectlyFollowsRelation(storage_df)
+        self.case_activity_storage: CaseActivityStorage = CaseActivityStorage(storage_case)
+        self.conformance_storage: ConformanceStorage = ConformanceStorage(storage_conformance)
         self.end_activity_storage: BorderActivityStorage = BorderActivityStorage(set())
         self.start_activity_storage: BorderActivityStorage = BorderActivityStorage(set())
 
@@ -26,7 +26,7 @@ class DccStorage(Storage):
         self.case_activity_storage.store_event_for_case(event)
 
     def store_conformance_values(self, case_id, last_activity, current_conformance):
-        self.conformance_storage.store_conformance_values(ConformanceValues(case_id, last_activity, current_conformance))
+        self.conformance_storage.store_conformance_values(SConformanceValues(case_id=case_id, last_activity=last_activity, conformance=current_conformance))
 
     def update_conformance(self, case_id, conformance):
         self.conformance_storage.update_conformance(case_id, conformance)

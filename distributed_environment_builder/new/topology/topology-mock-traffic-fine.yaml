@@ -2,43 +2,43 @@ nodes:
   - name: node0
     type: mock
     label:
-      datasource: "G1"
+      datasource: "Create Fine"
       category: edge
     delay: 0
   - name: node1
     type: mock
     label:
-      datasource: "G2"
+      datasource: "Send Fine"
       category: edge
     delay: 0
   - name: node2
     type: mock
     label:
-      datasource: "G3"
+      datasource: "Appeal to Judge"
       category: edge
     delay: 0
   - name: node3
     type: mock
     label:
-      datasource: "G4"
+      datasource: "Insert Fine Notification"
       category: edge
     delay: 0
   - name: node4
     type: mock
     label:
-      datasource: "G5"
+      datasource: "Insert Fine Notification"
       category: edge
     delay: 0
   - name: node5
     type: mock
     label:
-      datasource: "G6"
+      datasource: "Payment"
       category: edge
     delay: 0
   - name: node6
     type: mock
     label:
-      datasource: "G7"
+      datasource: "Notify Result Appeal to Offender"
       category: edge
     delay: 0
 assignment:

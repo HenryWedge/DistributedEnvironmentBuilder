@@ -1,0 +1,22 @@
+datasources:
+  - group: "A"
+    activities:
+      - "CreateFine"
+      - "SendFine"
+  - group: "B"
+    activities:
+      - "Insert Fine Notification"
+      - "Insert Date Appeal to Prefecture"
+      - "Notify Result Appeal to Offender"
+  - group: "C"
+    activities:
+      - "Send for Credit Collection"
+      - "Send Appeal to Prefecture"
+  - group: "D"
+    activities:
+      - "Receive Result Appeal from Prefecture"
+      - "Add penalty"
+      - "Appeal to Judge"
+  - group: "E"
+    activities:
+      - "Payment"

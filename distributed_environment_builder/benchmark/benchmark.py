@@ -1,5 +1,6 @@
 from distributed_environment_builder.benchmark.algo_sink import DfgMinerAlgoSink
 from distributed_environment_builder.benchmark.deployed_algorithm import DeployedAlgorithm
+from distributed_environment_builder.benchmark.event_emitter import EventEmitter
 from distributed_environment_builder.benchmark.monitoring import TopologyMonitor
 from distributed_environment_builder.infrastructure.computing_topology import ComputingTopology
 from distributed_event_factory.event_factory import EventFactory
@@ -8,7 +9,7 @@ from distributed_event_factory.event_factory import EventFactory
 class Benchmark:
     def __init__(
             self,
-            event_factory,
+            event_emitter: EventEmitter,
             topology,
             distributed_algorithm,
             request_node_id
@@ -16,7 +17,7 @@ class Benchmark:
         self.monitor: TopologyMonitor = None
         self.deployed_algorithm = None
         self.computing_topology: ComputingTopology = None
-        self.event_factory: EventFactory = event_factory
+        self.event_emitter: EventEmitter = event_emitter
         self.distributed_algorithm = distributed_algorithm
         self.request_node_id = request_node_id
         self.topology = topology
@@ -41,14 +42,15 @@ class Benchmark:
         self.monitor = TopologyMonitor(topology)
         self.deployed_algorithm = DeployedAlgorithm(topology, self.distributed_algorithm).deploy()
 
-        for i, node_id in enumerate(datasources):
-            self.event_factory.add_sink(
-                f"sensor-{i}",
-                DfgMinerAlgoSink(
-                    data_source_ref=[node_id],
-                    miner=self.deployed_algorithm.get_algorithm(f"sensor-{i}")
-                )
-            )
+
+        #for i, node_id in enumerate(datasources):
+        #    self.event_factory.add_sink(
+        #        f"sensor-{i}",
+        #        DfgMinerAlgoSink(
+        #            data_source_ref=[node_id],
+        #            miner=self.deployed_algorithm.get_algorithm(f"sensor-{i}")
+        #        )
+        #    )
 
     def hook(self, load):
         self.i = self.i + 1
@@ -63,9 +65,10 @@ class Benchmark:
     def check_slo(self, resource, load):
         self.init_algorithm()
         self.computing_topology.increase_network_capacities(resource, "sensor")
-        self.event_factory.run(
-            hook=lambda: self.hook(load)
-        )
+        event = self.event_emitter.get_event()
+        self.deployed_algorithm.get_algorithm("sensor-0").receive_event(event)
+        for i in range(100):
+            self.hook(load)
         sli = self.monitor.average_network_utilization
         self.experiment_results.append((resource, load, sli))
         return sli < 0.95

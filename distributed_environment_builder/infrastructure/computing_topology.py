@@ -5,7 +5,7 @@ from distributed_environment_builder.infrastructure.computing_node import Comput
 class ComputingTopology:
 
     def __init__(
-            self
+        self
     ):
         self.computing_nodes: Dict[str, ComputingNode] = dict()
         self.networks: Dict[str, Network] = dict()

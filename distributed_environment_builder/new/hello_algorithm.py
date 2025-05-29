@@ -1,9 +1,12 @@
+import time
+
 from compute.my_compute import MyCompute
 from conformance_score import ConformanceScore
 from network.fw.network import Network
 from process_mining_core.datastructure.core.directly_follows_relation import DirectlyFollowsRelation
 from process_mining_core.datastructure.core.event import Event
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
+from s_conformance_score import SConformanceScore
 from storage.dcc_storage import DccStorage
 
 class SayHelloAlgorithm:
@@ -13,7 +16,7 @@ class SayHelloAlgorithm:
 
     def run_on_node(self, node):
         self.node_id: str = node.node_id
-        self.storage: DccStorage = DccStorage(node.storage)
+        self.storage: DccStorage = DccStorage(node.get_storage("df"), node.get_storage("case"), node.get_storage("conform"))
         self.cpu = MyCompute()
         self.network: Network = node.network
         self.network.add_network_function("event", self.process_event, Event)
@@ -58,6 +61,7 @@ class SayHelloAlgorithm:
         return None
 
     def get_conformance_of_case(self, event):
+        start = time.time()
         conformance_values = self.storage.retrieve_conformance_values(event.caseid)
 
         last_activity = conformance_values.last_activity
@@ -79,9 +83,12 @@ class SayHelloAlgorithm:
             current_conformance = ConformanceScore(0, 0)
 
         conformance_update = self.cpu.compute_conformance(dfg, last_activity, event.activity)
-        conformance = current_conformance + conformance_update
-        self.storage.update_conformance(event.caseid, conformance)
+        conformance = SConformanceScore(path_length=current_conformance.path_length + conformance_update.path_length,
+                                        conformance_violations=current_conformance.conformance_violations + conformance_update.conformance_violations)
+        self.storage.update_conformance(event.caseid, SConformanceScore(conformance_violations=conformance.conformance_violations, path_length=conformance.path_length))
         self.storage.update_last_event_of_case(event.caseid, event.activity)
+        end = time.time()
+        print(end - start)
         return conformance
 
 

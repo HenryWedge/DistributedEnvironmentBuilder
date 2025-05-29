@@ -1,13 +1,14 @@
 import heapq
+import time
 
-from conformance_score import ConformanceScore
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
-from storage.conformance_value import ConformanceValues
+from s_conformance_score import SConformanceScore
 
 
 class MyCompute:
 
     def get_predecessor_node(self, last_event, nodes_with_timestamp_of_latest_event):
+        start = time.time()
         if last_event:
             latest_timestamp = last_event.timestamp
         else:
@@ -20,25 +21,35 @@ class MyCompute:
                 if not latest_timestamp or timestamp > latest_timestamp:
                     latest_timestamp = timestamp
                     predecessor_node = node
+        end = time.time()
+        print(f"get_predecessor_node: {end-start}")
         return predecessor_node
 
     def compute_conformance(self, directly_follows_graph: DirectlyFollowsGraph, last_activity, next_activity):
+        start = time.time()
         if not last_activity:
             if next_activity in directly_follows_graph.start_activities:
-                return ConformanceScore(1,0)
-            return ConformanceScore(1,1)
+                return SConformanceScore(path_length=1, conformance_violations=0)
+            return SConformanceScore(path_length=1, conformance_violations=1)
 
+        result = None
         if not self.has_item(directly_follows_graph, next_activity):
-            return ConformanceScore(1,1)
+            return SConformanceScore(path_length=1, conformance_violations=1)
         else:
             shortest_path = self.get_path_to_activity(directly_follows_graph, last_activity, next_activity)
             if shortest_path:
                 violations = len(shortest_path) - len({last_activity,next_activity})
             else:
-                return ConformanceScore(1, 1)
+                result = SConformanceScore(path_length=1, conformance_violations=1)
+                return result
             if violations == 0:
-                return ConformanceScore(1, 0)
-            return ConformanceScore(violations, violations)
+                result =  SConformanceScore(path_length=1, conformance_violations=0)
+                return result
+            result = SConformanceScore(path_length=violations, conformance_violations=violations)
+
+        end = time.time()
+        print(f"compute_conformance: {end-start}")
+        return result
 
     def has_item(self, directly_follows_graph: DirectlyFollowsGraph, item):
         for dfr in directly_follows_graph.get_relations():

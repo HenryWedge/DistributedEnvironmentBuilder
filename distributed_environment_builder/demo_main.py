@@ -16,7 +16,7 @@ from distributed_event_factory.event_factory import EventFactory
 from distributed_environment_builder.nodes import edge_node
 from distributed_event_factory.provider.data.constant_count_provider import ConstantCountProvider
 from distributed_event_factory.provider.data.increasing_case import IncreasingCaseIdProvider
-from distributed_event_factory.simulation.process_simulation import ProcessSimulator
+from distributed_event_factory.simulation.process_simulation import DefProcessSimulator
 
 def demo_run():
     datasources = [
@@ -74,7 +74,7 @@ if __name__ == '__main__':
             config = yaml.safe_load(file)
             datasources[config["name"]] = parser.parse(config["spec"])
 
-    process_simulator = ProcessSimulator(
+    process_simulator = DefProcessSimulator(
         data_sources=datasources,
         case_id_provider=IncreasingCaseIdProvider(),
         max_concurrent_cases=ConstantCountProvider(1)

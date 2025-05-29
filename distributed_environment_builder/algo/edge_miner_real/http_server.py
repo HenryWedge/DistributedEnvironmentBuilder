@@ -3,14 +3,6 @@ from threading import Thread
 import requests
 from flask import Flask, request
 
-def lol(func):
-    def wrapper(self, *args, **kwargs):
-        print("Before method execution")
-        res = func(self, *args, **kwargs)
-        print("After method execution")
-        return res
-    return wrapper
-
 class Network:
     def __init__(self):
         self.all_nodes = dict()
@@ -27,7 +19,6 @@ class CountNode:
         self.own_node_id = own_node_id
         self.network = network
 
-    @lol
     def count(self, i: int):
         self.c = self.c + i
         return self.c
@@ -56,7 +47,6 @@ class CounterEndpoint:
     def __init__(self, count_node):
         self.count_node: CountNode = count_node
 
-    @lol
     def count(self):
         i = request.args.get("i")
         if i:
@@ -81,7 +71,6 @@ class Counter:
         self.app.run(host='0.0.0.0', port=self.node_id)
 
 class EndpointDefinition:
-
     def __init__(self, name, function, args):
         self.name = name
         self.function = function
@@ -99,17 +88,11 @@ if __name__ == '__main__':
     count_node = CountNode("5000", network)
     endpoint_definitions = [EndpointDefinition("count", count_node.count, {})]
 
+    counter  = Counter(5000, CounterEndpoint(CountNode(5000, network)))
+    counter2 = Counter(5001, CounterEndpoint(CountNode(5001, network)))
 
-    getattr(count_node, "count").decorator
+    t1 = Thread(target=counter.run)
+    t2 = Thread(target=counter2.run)
 
-    #for definition in endpoint_definitions:
-    #    print(getattr(definition, "count"))
-
-    #counter  = Counter(5000, CounterEndpoint(CountNode(5000, network)))
-    #counter2 = Counter(5001, CounterEndpoint(CountNode(5001, network)))
-#
-    #t1 = Thread(target=counter.run)
-    #t2 = Thread(target=counter2.run)
-#
-    #t1.start()
-    #t2.start()
+    t1.start()
+    t2.start()

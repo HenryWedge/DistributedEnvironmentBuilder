@@ -5,6 +5,7 @@ from hello_topology import HelloTopology
 from network.fw.http_network import HttpNetwork
 from network.fw.mock_network import MockNetwork
 from storage.dict_storage import DictStorage
+from storage.file_storage import DictFileStorage
 
 class TopologyFactory:
     def __init__(self, filename):
@@ -20,7 +21,7 @@ class TopologyFactory:
                 new_node = HelloNode(
                     node["label"]["datasource"],
                     MockNetwork(self.topology.network_address_resolution, node["delay"]),
-                    lambda: DictStorage(dictionary=dict()),
+                    lambda name: DictFileStorage(name),
                     node["label"]["category"],
                     node["label"]["datasource"]
                 )
