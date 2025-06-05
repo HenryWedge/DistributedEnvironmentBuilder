@@ -11,5 +11,5 @@ class HttpNetworkInterface(HelloNetworkInterface):
     def get_hello(self, payload=dict()):
         print(requests.get(url=f"http://localhost:{self.node_id}/hello").content)
 
-    def get_hi(self, payloadx=dict()):
+    def get_hi(self, payload=dict()):
         print(requests.get(url=f"http://localhost:{self.node_id}/hi").content)

@@ -1,0 +1,10 @@
+nodes:
+  - name: node0
+    type: mock
+    port: 8090
+    label:
+      datasource: "G1"
+      category: edge
+    delay: 0.001
+assignment:
+  helloAlgo: edge

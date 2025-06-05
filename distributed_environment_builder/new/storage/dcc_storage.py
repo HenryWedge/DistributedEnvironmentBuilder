@@ -4,10 +4,9 @@ from s_conformance_values import SConformanceValues
 from storage.border_activity_storage import BorderActivityStorage
 from storage.case_activity_storage import CaseActivityStorage
 from storage.conformance_storage import ConformanceStorage
-from storage.storage import Storage
+from storage.dcc_storage_interface import DccStorageInterface
 
-
-class DccStorage(Storage):
+class DccStorage(DccStorageInterface):
 
     def __init__(self, storage_df, storage_case, storage_conformance):
         self.directly_follows_storage: CountedDirectlyFollowsRelation = CountedDirectlyFollowsRelation(storage_df)

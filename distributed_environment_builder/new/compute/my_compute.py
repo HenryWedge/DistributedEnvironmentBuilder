@@ -4,11 +4,15 @@ import time
 from process_mining_core.datastructure.core.model.directly_follows_graph import DirectlyFollowsGraph
 from s_conformance_score import SConformanceScore
 
-
 class MyCompute:
+
+    def __init__(self, compute):
+        self.compute_time_metrics = []
+        self.compute = compute
 
     def get_predecessor_node(self, last_event, nodes_with_timestamp_of_latest_event):
         start = time.time()
+
         if last_event:
             latest_timestamp = last_event.timestamp
         else:
@@ -18,10 +22,12 @@ class MyCompute:
         if nodes_with_timestamp_of_latest_event:
             for node in nodes_with_timestamp_of_latest_event:
                 timestamp = nodes_with_timestamp_of_latest_event[node]
-                if not latest_timestamp or timestamp > latest_timestamp:
+                if self.compute.run(lambda: not latest_timestamp or timestamp > latest_timestamp):
                     latest_timestamp = timestamp
                     predecessor_node = node
+
         end = time.time()
+        self.compute_time_metrics.append(end-start)
         print(f"get_predecessor_node: {end-start}")
         return predecessor_node
 
@@ -48,6 +54,8 @@ class MyCompute:
             result = SConformanceScore(path_length=violations, conformance_violations=violations)
 
         end = time.time()
+
+        self.compute_time_metrics.append(end-start)
         print(f"compute_conformance: {end-start}")
         return result
 
@@ -83,7 +91,7 @@ class MyCompute:
 
             for neighbor_edge in self.get_neighbours(dfg, current_edge):
                 distance = current_distance + 1
-                if distance < distances.get(neighbor_edge, float('inf')):
+                if self.compute.run(lambda: distance < distances.get(neighbor_edge, float('inf'))):
                     distances[neighbor_edge] = distance
                     heapq.heappush(priority_queue, (distance, neighbor_edge, path + [current_edge]))
         return None

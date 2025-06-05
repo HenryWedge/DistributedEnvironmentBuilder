@@ -13,7 +13,7 @@ class HelloTopology:
 
     def add_node(self, node_id, node):
         self.nodes[node_id] = node
-        self.network_address_resolution.add_network_address(node_id, node.network.get_address())
+        self.network_address_resolution.add_network_address(node_id, node.control_network.get_address())
 
     def get_node(self, node_id):
         return self.nodes[node_id]
@@ -38,3 +38,7 @@ class HelloTopology:
     def run_all(self):
         for node in self.get_nodes():
             node.run()
+
+    def monitor(self, event_delta, time_delta):
+        for node in self.get_nodes():
+            node.run_monitor(event_delta, time_delta)

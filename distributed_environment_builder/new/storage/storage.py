@@ -1,15 +1,12 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+
 
 class Storage(ABC):
 
-    def store_last_event_of_case(self, payload):
+    @abstractmethod
+    def time_utilization(self, event_delta):
         pass
 
-    def get_directly_follows_graph(self):
-        pass
-
-    def store_directly_follows_relation(self, payload):
-        pass
-
-    def store_conformance_of_case(self, payload):
+    @abstractmethod
+    def resource_utilization(self, time_delta):
         pass

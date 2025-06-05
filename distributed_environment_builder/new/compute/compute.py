@@ -1,25 +1,16 @@
-import asyncio
-import time
-from abc import ABC
-from threading import Lock
+from abc import ABC, abstractmethod
 
 
 class Compute(ABC):
 
-    def __init__(self, operations_per_second):
-        self.operations_per_second = operations_per_second
-        self.queue = []
-        self.mutex = Lock()
+    @abstractmethod
+    def time_utilization(self, event_delta):
+        pass
 
-    def get_utilization(self):
-        return len(self.queue) / self.operations_per_second
+    @abstractmethod
+    def resource_utilization(self, time_delta):
+        pass
 
-    async def submit(self, f):
-        with self.mutex:
-            self.queue.append(f)
-        sleep_time = len(self.queue) / self.operations_per_second
-        await asyncio.sleep(sleep_time)
-        with self.mutex:
-            self.queue.remove(f)
-        return f()
-
+    @abstractmethod
+    def run(self, f, p):
+        pass

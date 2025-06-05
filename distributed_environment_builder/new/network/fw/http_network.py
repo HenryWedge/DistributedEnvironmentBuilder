@@ -15,6 +15,9 @@ class HttpNetwork(Network):
     def add_network_function(self, name, func, clazz):
         self.network_functions[name] = HttpNetworkFunction(self.app, func, name, clazz)
 
+    def has_node(self, node_id):
+        return self.network.has_node(node_id)
+
     def get(self, name):
         return self.network_functions[name]
 

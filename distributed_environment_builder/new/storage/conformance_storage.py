@@ -12,7 +12,7 @@ class ConformanceStorage:
 
     def retrieve_conformance_values(self, case_id):
         if case_id in self.storage:
-            return SConformanceValues.model_validate_json(self.storage[case_id])
+            return self.storage.get_item(case_id, SConformanceValues)
         return SConformanceValues(case_id=case_id, last_activity=None, conformance=SConformanceScore(conformance_violations=0, path_length=0))
 
     def update_last_event_of_case(self, case_id, activity):
@@ -21,7 +21,6 @@ class ConformanceStorage:
             self.store_conformance_values(SConformanceValues(case_id=case_id, last_activity=activity, conformance=conformance_values.conformance))
         else:
             self.store_conformance_values(SConformanceValues(case_id=case_id, last_activity=activity, conformance=SConformanceScore(conformance_violations=0, path_length=0)))
-
 
     def update_conformance(self, case_id, conformance):
         conformance_values: ConformanceValues = self.retrieve_conformance_values(case_id)

@@ -1,44 +1,37 @@
 nodes:
   - name: node0
     type: mock
+    port: 8090
     label:
-      datasource: "G1"
+      datasources:
+      - "G1"
       category: edge
-    delay: 0
+    delay: 0.001
   - name: node1
     type: mock
+    port: 8091
     label:
-      datasource: "G2"
+      datasources:
+      - "G2"
       category: edge
-    delay: 0
+    delay: 0.001
   - name: node2
     type: mock
+    port: 8092
     label:
-      datasource: "G3"
+      datasources:
+      - "G3"
       category: edge
-    delay: 0
+    delay: 0.001
   - name: node3
     type: mock
+    port: 8093
     label:
-      datasource: "G4"
-      category: edge
-    delay: 0
-  - name: node4
-    type: mock
-    label:
-      datasource: "G5"
-      category: edge
-    delay: 0
-  - name: node5
-    type: mock
-    label:
-      datasource: "G6"
-      category: edge
-    delay: 0
-  - name: node6
-    type: mock
-    label:
-      datasource: "G7"
+      datasources:
+      - "G4"
+      - "G5"
+      - "G6"
+      - "G7"
       category: edge
     delay: 0
 assignment:
